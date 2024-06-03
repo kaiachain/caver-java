@@ -475,13 +475,14 @@ public class RpcTest {
         assertNotNull(result);
     }
 
-    @Ignore
-    @Test
-    public void testGetRewardbase() throws Exception {
-        Bytes20 response = caver.klay().getRewardbase().send();
-        // Result - If requested from non-CN nodes
-        assertEquals("rewardbase must be explicitly specified", response.getError().getMessage());
-    }
+    // Disabled
+    // @Ignore
+    // @Test
+    // public void testGetRewardbase() throws Exception {
+    //     Bytes20 response = caver.klay().getRewardbase().send();
+    //     // Result - If requested from non-CN nodes
+    //     assertEquals("rewardbase must be explicitly specified", response.getError().getMessage());
+    // }
 
     @Test
     @Ignore

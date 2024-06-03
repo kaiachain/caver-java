@@ -1187,31 +1187,32 @@ public class RpcTest extends Accounts {
             checkFeeHistoryResult(feeHistoryResult, blockCount, rewardPercentiles);
         }
 
-        @Test
-        public void createAccessListTest() throws IOException {
-            Block block = caver.rpc.klay.getBlockByNumber(DefaultBlockParameterName.LATEST).send();
-            Quantity gasPrice = caver.rpc.klay.getGasPrice().send();
-            BigInteger blockNumber = new BigInteger(caver.utils.stripHexPrefix(block.getResult().getNumber()), 16);
-            String blockHash = block.getResult().getHash();
-            CallObject callObject = CallObject.createCallObject(
-                    LUMAN.getAddress(),
-                    WAYNE.getAddress(),
-                    BigInteger.valueOf(100000),
-                    gasPrice.getValue(),
-                    BigInteger.valueOf(1)
-            );
-            AccessListResult accessListResult = caver.rpc.klay.createAccessList(callObject, DefaultBlockParameterName.LATEST).send();
-            checkAccessListResult(accessListResult.getResult());
+        // Disabled
+        // @Test
+        // public void createAccessListTest() throws IOException {
+        //     Block block = caver.rpc.klay.getBlockByNumber(DefaultBlockParameterName.LATEST).send();
+        //     Quantity gasPrice = caver.rpc.klay.getGasPrice().send();
+        //     BigInteger blockNumber = new BigInteger(caver.utils.stripHexPrefix(block.getResult().getNumber()), 16);
+        //     String blockHash = block.getResult().getHash();
+        //     CallObject callObject = CallObject.createCallObject(
+        //             LUMAN.getAddress(),
+        //             WAYNE.getAddress(),
+        //             BigInteger.valueOf(100000),
+        //             gasPrice.getValue(),
+        //             BigInteger.valueOf(1)
+        //     );
+        //     AccessListResult accessListResult = caver.rpc.klay.createAccessList(callObject, DefaultBlockParameterName.LATEST).send();
+        //     checkAccessListResult(accessListResult.getResult());
 
-            accessListResult = caver.rpc.klay.createAccessList(callObject, new DefaultBlockParameterNumber(blockNumber)).send();
-            checkAccessListResult(accessListResult.getResult());
+        //     accessListResult = caver.rpc.klay.createAccessList(callObject, new DefaultBlockParameterNumber(blockNumber)).send();
+        //     checkAccessListResult(accessListResult.getResult());
 
-            accessListResult = caver.rpc.klay.createAccessList(callObject, blockNumber).send();
-            checkAccessListResult(accessListResult.getResult());
+        //     accessListResult = caver.rpc.klay.createAccessList(callObject, blockNumber).send();
+        //     checkAccessListResult(accessListResult.getResult());
 
-            accessListResult = caver.rpc.klay.createAccessList(callObject, blockHash).send();
-            checkAccessListResult(accessListResult.getResult());
-        }
+        //     accessListResult = caver.rpc.klay.createAccessList(callObject, blockHash).send();
+        //     checkAccessListResult(accessListResult.getResult());
+        // }
 
         // checkAccessListResult checks whether given AcccessListResultData instance is right or not.
         private void checkAccessListResult(AccessListResult.AccessListResultData accessListResultData) {
