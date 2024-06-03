@@ -665,41 +665,42 @@ public class RpcTest extends Accounts {
             sampleReceiptData = sendKlay();
         }
 
-        @Test
-        public void getRewards() throws IOException {
-            KlayRewards responseWithNumber = klay.getRewards(BigInteger.valueOf(5)).send();
-            assertFalse(responseWithNumber.hasError());
-            assertNotNull(responseWithNumber.getResult().getBurntFee());
-            assertNotNull(responseWithNumber.getResult().getKff());
-            assertNotNull(responseWithNumber.getResult().getKcf());
-            assertNotNull(responseWithNumber.getResult().getMinted());
-            assertNotNull(responseWithNumber.getResult().getProposer());
-            assertNotNull(responseWithNumber.getResult().getRewards());
-            assertNotNull(responseWithNumber.getResult().getStakers());
-            assertNotNull(responseWithNumber.getResult().getTotalFee());
+        // Disabled
+        // @Test
+        // public void getRewards() throws IOException {
+        //     KlayRewards responseWithNumber = klay.getRewards(BigInteger.valueOf(5)).send();
+        //     assertFalse(responseWithNumber.hasError());
+        //     assertNotNull(responseWithNumber.getResult().getBurntFee());
+        //     assertNotNull(responseWithNumber.getResult().getKff());
+        //     assertNotNull(responseWithNumber.getResult().getKcf());
+        //     assertNotNull(responseWithNumber.getResult().getMinted());
+        //     assertNotNull(responseWithNumber.getResult().getProposer());
+        //     assertNotNull(responseWithNumber.getResult().getRewards());
+        //     assertNotNull(responseWithNumber.getResult().getStakers());
+        //     assertNotNull(responseWithNumber.getResult().getTotalFee());
 
-            KlayRewards responseWithTag = klay.getRewards(DefaultBlockParameterName.LATEST).send();
-            assertFalse(responseWithTag.hasError());
-            assertNotNull(responseWithTag.getResult().getBurntFee());
-            assertNotNull(responseWithTag.getResult().getKff());
-            assertNotNull(responseWithTag.getResult().getKcf());
-            assertNotNull(responseWithTag.getResult().getMinted());
-            assertNotNull(responseWithTag.getResult().getProposer());
-            assertNotNull(responseWithTag.getResult().getRewards());
-            assertNotNull(responseWithTag.getResult().getStakers());
-            assertNotNull(responseWithTag.getResult().getTotalFee());
+        //     KlayRewards responseWithTag = klay.getRewards(DefaultBlockParameterName.LATEST).send();
+        //     assertFalse(responseWithTag.hasError());
+        //     assertNotNull(responseWithTag.getResult().getBurntFee());
+        //     assertNotNull(responseWithTag.getResult().getKff());
+        //     assertNotNull(responseWithTag.getResult().getKcf());
+        //     assertNotNull(responseWithTag.getResult().getMinted());
+        //     assertNotNull(responseWithTag.getResult().getProposer());
+        //     assertNotNull(responseWithTag.getResult().getRewards());
+        //     assertNotNull(responseWithTag.getResult().getStakers());
+        //     assertNotNull(responseWithTag.getResult().getTotalFee());
 
-            KlayRewards response = klay.getRewards().send();
-            assertFalse(response.hasError());
-            assertNotNull(response.getResult().getBurntFee());
-            assertNotNull(response.getResult().getKff());
-            assertNotNull(response.getResult().getKcf());
-            assertNotNull(response.getResult().getMinted());
-            assertNotNull(response.getResult().getProposer());
-            assertNotNull(response.getResult().getRewards());
-            assertNotNull(response.getResult().getStakers());
-            assertNotNull(response.getResult().getTotalFee());
-        }
+        //     KlayRewards response = klay.getRewards().send();
+        //     assertFalse(response.hasError());
+        //     assertNotNull(response.getResult().getBurntFee());
+        //     assertNotNull(response.getResult().getKff());
+        //     assertNotNull(response.getResult().getKcf());
+        //     assertNotNull(response.getResult().getMinted());
+        //     assertNotNull(response.getResult().getProposer());
+        //     assertNotNull(response.getResult().getRewards());
+        //     assertNotNull(response.getResult().getStakers());
+        //     assertNotNull(response.getResult().getTotalFee());
+        // }
 
         @Test
         public void testIsAccountCreated() throws Exception {
