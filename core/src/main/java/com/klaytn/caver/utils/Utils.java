@@ -377,6 +377,86 @@ public class Utils {
     }
 
     /**
+     * Converts amount to kei amount.
+     * @param num The amount to convert.
+     * @param unit Th unit to convert from.
+     * @return String
+     */
+    public static String convertToKei(String num, String unit) {
+        return convertToKei(new BigDecimal(num), KlayUnit.fromString(unit));
+    }
+
+    /**
+     * Converts amount to kei amount.
+     * @param num The amount to convert.
+     * @param unit Th unit to convert from.
+     * @return String
+     */
+    public static String convertToKei(BigDecimal num, String unit) {
+        return convertToKei(num, KlayUnit.fromString(unit));
+    }
+
+    /**
+     * Converts amount to kei amount.
+     * @param num The amount to convert.
+     * @param unit Th unit to convert from.
+     * @return String
+     */
+    public static String convertToKei(String num, KlayUnit unit) {
+        return convertToKei(new BigDecimal(num), unit);
+    }
+
+    /**
+     * Converts amount to kei amount.
+     * @param num The amount to convert.
+     * @param unit Th unit to convert from.
+     * @return String
+     */
+    public static String convertToKei(BigDecimal num, KlayUnit unit) {
+        return num.multiply(unit.getPebFactor()).toString();
+    }
+
+    /**
+     * Converts kei amount to specific unit amount.
+     * @param num The kei amount
+     * @param unit The unit to convert to
+     * @return String
+     */
+    public static String convertFromKei(String num, String unit) {
+        return convertFromKei(new BigDecimal(num), KlayUnit.fromString(unit));
+    }
+
+    /**
+     * Converts kei amount to specific unit amount.
+     * @param num The kei amount
+     * @param unit The unit to convert to
+     * @return String
+     */
+    public static String convertFromKei(BigDecimal num, String unit) {
+        return convertFromKei(num, KlayUnit.fromString(unit));
+    }
+
+    /**
+     * Converts kei amount to specific unit amount.
+     * @param num The kei amount
+     * @param unit The unit to convert to
+     * @return String
+     */
+    public static String convertFromKei(String num, KlayUnit unit) {
+        return convertFromKei(new BigDecimal(num), unit).toString();
+    }
+
+    /**
+     * Converts kei amount to specific unit amount.
+     * @param num The kei amount
+     * @param unit The unit to convert to
+     * @return String
+     */
+    public static String convertFromKei(BigDecimal num, KlayUnit unit) {
+        return num.divide(unit.getPebFactor()).toString();
+    }
+
+    /**
      * Recovers the public key that was used to sign the given data.<p>
      * This method hashes the message with klaytn prefix automatically.
      * <pre>Example :
@@ -583,7 +663,10 @@ public class Utils {
         kKLAY("kKLAY", 21),
         MKLAY("MKLAY", 24),
         GKLAY("GKLAY", 27),
-        TKLAY("TKLAY", 30);
+        TKLAY("TKLAY", 30),
+        kei("kei", 0),
+        Gkei("Gkei", 9),
+        KAIA("KAIA", 18);
 
         private String unit;
         private BigDecimal pebFactor;
