@@ -73,7 +73,7 @@ public final class Convert {
         GKLAY("GKLAY", 27),
         KEI("kei", 0),
         GKEI("Gkei", 9),
-        KLAY("KLAY", 18);
+        KAIA("KAIA", 18);
 
         private String name;
         private BigDecimal pebFactor;
