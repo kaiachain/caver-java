@@ -236,6 +236,86 @@ public class UtilsWrapper {
     }
 
     /**
+     * Converts amount to kei amount.
+     * @param num The amount to convert.
+     * @param unit Th unit to convert from.
+     * @return String
+     */
+    public String convertToKei(String num, String unit) {
+        return Utils.convertToKei(num, unit);
+    }
+
+    /**
+     * Converts amount to kei amount.
+     * @param num The amount to convert.
+     * @param unit Th unit to convert from.
+     * @return String
+     */
+    public String convertToKei(BigDecimal num, String unit) {
+        return Utils.convertToKei(num, unit);
+    }
+
+    /**
+     * Converts amount to kei amount.
+     * @param num The amount to convert.
+     * @param unit Th unit to convert from.
+     * @return String
+     */
+    public String convertToKei(String num, Utils.KlayUnit unit) {
+        return Utils.convertToKei(num, unit);
+    }
+
+    /**
+     * Converts amount to kei amount.
+     * @param num The amount to convert.
+     * @param unit Th unit to convert from.
+     * @return String
+     */
+    public String convertToKei(BigDecimal num, Utils.KlayUnit unit) {
+        return Utils.convertToKei(num, unit);
+    }
+
+    /**
+     * Converts kei amount to specific unit amount.
+     * @param num The kei amount
+     * @param unit The unit to convert to
+     * @return String
+     */
+    public String convertFromKei(String num, String unit) {
+        return Utils.convertFromKei(num, unit);
+    }
+
+    /**
+     * Converts kei amount to specific unit amount.
+     * @param num The kei amount
+     * @param unit The unit to convert to
+     * @return String
+     */
+    public String convertFromKei(BigDecimal num, String unit) {
+        return Utils.convertFromKei(num, unit);
+    }
+
+    /**
+     * Converts kei amount to specific unit amount.
+     * @param num The kei amount
+     * @param unit The unit to convert to
+     * @return String
+     */
+    public String convertFromKei(String num, Utils.KlayUnit unit) {
+        return Utils.convertFromKei(num, unit);
+    }
+
+    /**
+     * Converts kei amount to specific unit amount.
+     * @param num The kei amount
+     * @param unit The unit to convert to
+     * @return String
+     */
+    public String convertFromKei(BigDecimal num, Utils.KlayUnit unit) {
+        return Utils.convertFromKei(num, unit);
+    }
+
+    /**
      * Recovers the address that was used to sign the given data.
      * This function automatically creates a message hash by appending a Klaytn sign prefix to the message.
      * @param message A plain message when using signed.
