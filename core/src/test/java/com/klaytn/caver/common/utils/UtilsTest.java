@@ -1036,6 +1036,157 @@ public class UtilsTest {
         }
     }
 
+    public static class convertToKeiTest {
+        static Caver caver = new Caver(Caver.DEFAULT_URL);
+
+        @Test
+        public void from_kei() {
+            String expected = "1";
+            String converted;
+
+            converted = caver.utils.convertToKei(BigDecimal.ONE, "kei");
+            assertEquals(expected, converted);
+
+            converted = caver.utils.convertToKei("1", "kei");
+            assertEquals(expected, converted);
+        }
+
+        @Test
+        public void from_kei_enum() {
+            String expected = "1";
+            String converted;
+
+            converted = caver.utils.convertToKei(BigDecimal.ONE, Utils.KlayUnit.kei);
+            assertEquals(expected, converted);
+
+            converted = caver.utils.convertToKei("1", Utils.KlayUnit.kei);
+            assertEquals(expected, converted);
+        }
+
+        @Test
+        public void from_Gkei() {
+            String expected = "1000000000";
+            String converted;
+
+            converted = caver.utils.convertToKei(BigDecimal.ONE, "Gkei");
+            assertEquals(expected, converted);
+
+            converted = caver.utils.convertToKei("1", "Gkei");
+            assertEquals(expected, converted);
+        }
+
+        @Test
+        public void from_Gkei_enum() {
+            String expected = "1000000000";
+            String converted;
+
+            converted = caver.utils.convertToKei(BigDecimal.ONE, Utils.KlayUnit.Gkei);
+            assertEquals(expected, converted);
+
+            converted = caver.utils.convertToKei("1", Utils.KlayUnit.Gkei);
+            assertEquals(expected, converted);
+        }
+
+        @Test
+        public void from_Kaia() {
+            String expected = "1000000000000000000";
+            String converted;
+
+            converted = caver.utils.convertToKei(BigDecimal.ONE, "KAIA");
+            assertEquals(expected, converted);
+
+            converted = caver.utils.convertToKei("1", "KAIA");
+            assertEquals(expected, converted);
+        }
+
+        @Test
+        public void from_Kaia_enum() {
+            String expected = "1000000000000000000";
+            String converted;
+
+            converted = caver.utils.convertToKei(BigDecimal.ONE, Utils.KlayUnit.KAIA);
+            assertEquals(expected, converted);
+
+            converted = caver.utils.convertToKei("1", Utils.KlayUnit.KAIA);
+            assertEquals(expected, converted);
+        }
+    }
+
+    public static class convertFromKeiTest {
+
+        static Caver caver = new Caver(Caver.DEFAULT_URL);
+        @Test
+        public void to_kei() {
+            String amount = "1000000000000000000000000000";
+            String expected = amount;
+
+            String converted = caver.utils.convertFromKei(amount, "kei");
+            assertEquals(expected, converted);
+
+            converted = caver.utils.convertFromKei(new BigDecimal(amount), "kei");
+            assertEquals(expected, converted);
+        }
+
+        @Test
+        public void to_kei_enum() {
+            String amount = "1000000000000000000000000000";
+            String expected = amount;
+
+            String converted = caver.utils.convertFromKei(amount, Utils.KlayUnit.kei);
+            assertEquals(expected, converted);
+
+            converted = caver.utils.convertFromKei(new BigDecimal(amount), Utils.KlayUnit.kei);
+            assertEquals(expected, converted);
+        }
+
+        @Test
+        public void to_Gkei() {
+            String amount = "1000000000000000000000000000";
+            String expected = "1000000000000000000";
+
+            String converted = caver.utils.convertFromKei(amount, "Gkei");
+            assertEquals(expected, converted);
+
+            converted = caver.utils.convertFromKei(new BigDecimal(amount), "Gkei");
+            assertEquals(expected, converted);
+        }
+        @Test
+        public void to_Gkei_enum() {
+            String amount = "1000000000000000000000000000";
+            String expected = "1000000000000000000";
+
+            String converted = caver.utils.convertFromKei(amount, Utils.KlayUnit.Gkei);
+            assertEquals(expected, converted);
+
+            converted = caver.utils.convertFromKei(new BigDecimal(amount), Utils.KlayUnit.Gkei);
+            assertEquals(expected, converted);
+        }
+
+        @Test
+        public void to_KAIA() {
+            String amount = "1000000000000000000000000000";
+            String expected = "1000000000";
+
+            String converted = caver.utils.convertFromKei(amount, "KAIA");
+            assertEquals(expected, converted);
+
+            converted = caver.utils.convertFromKei(new BigDecimal(amount), "KAIA");
+            assertEquals(expected, converted);
+        }
+
+        @Test
+        public void to_KAIA_enum() {
+            String amount = "1000000000000000000000000000";
+            String expected = "1000000000";
+
+            String converted = caver.utils.convertFromKei(amount, Utils.KlayUnit.KAIA);
+            assertEquals(expected, converted);
+
+            converted = caver.utils.convertFromKei(new BigDecimal(amount), Utils.KlayUnit.KAIA);
+            assertEquals(expected, converted);
+        }
+    }
+
     public static class isNumberTest {
         static Caver caver = new Caver(Caver.DEFAULT_URL);
 
