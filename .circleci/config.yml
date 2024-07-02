@@ -45,12 +45,12 @@ adb_logging: &adb_logging
       adb logcat > adb.log
     background: true
 
-pull_klaytn_image: &pull_klaytn_image
+pull_kaia_image: &pull_kaia_image
   run:
-    name: "Pull and tag Klaytn image"
+    name: "Pull and tag kaia image"
     command: |
-        docker pull klaytn/build_base:latest
-        docker image tag klaytn/build_base:latest klaytn
+        docker pull kaiachain/build_base:latest
+        docker image tag kaiachain/build_base:latest kaia
 
 check_test_network: &check_test_network
   run:
@@ -61,16 +61,16 @@ check_test_network: &check_test_network
         while [ $RETRY -lt $MAXRETRY ]
         do
             if curl --fail -H "Content-Type: application/json" --data '{"jsonrpc":"2.0","method":"rpc_modules","params":[],"id":1}' http://localhost:8551 2>/dev/null; then
-                echo "Klaytn RPC server is up"
+                echo "Kaia RPC server is up"
                 break
             else
-                echo "wait for Klaytn RPC server..."
+                echo "wait for Kaia RPC server..."
                 sleep 5
             fi
             RETRY=$(($RETRY+5))
         done
         if [ $RETRY -eq $MAXRETRY ]; then
-            echo "failed to connect Klaytn RPC server"
+            echo "failed to connect Kaia RPC server"
             exit 1
         fi
 
@@ -133,7 +133,7 @@ jobs:
     <<: *machine_ubuntu
     steps:
       - checkout
-      - *pull_klaytn_image
+      - *pull_kaia_image
       - *start_test_network
       - *check_test_network
       - run:
@@ -169,7 +169,7 @@ jobs:
       - checkout
       - *include_android_instrumented_test_as_subproject
       - *setup_android_test_files
-      - *pull_klaytn_image
+      - *pull_kaia_image
       - *start_test_network
       - *check_test_network
       - *check_android_version
@@ -239,10 +239,10 @@ jobs:
           name: "Verify tag and file verison match"
           command: |
             TAGGER=$(git for-each-ref --format='%(tagger)' refs/tags/$CIRCLE_TAG | sed 's/ .*//')
-            if [ $TAGGER == 'circleci-klaytn' ]; then
-              echo "Pass! Tagger is circleci-klaytn"
+            if [ $TAGGER == 'circleci-kaia' ]; then
+              echo "Pass! Tagger is circleci-kaia"
             else
-              echo "only circleci-klaytn can tagging major version"
+              echo "only circleci-kaia can tagging major version"
               exit 1
             fi
 
@@ -288,7 +288,7 @@ jobs:
               current_version=$(.circleci/version.sh)
               echo "git tag v$current_version"
               git config --global user.email "team.devops@groundx.xyz"
-              git config --global user.name "circleci-klaytn"
+              git config --global user.name "circleci-kaia"
               git tag -a v$current_version -m "$CIRCLE_STAGE"
               git push origin v$current_version
       - run:
