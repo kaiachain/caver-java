@@ -34,7 +34,7 @@ apply plugin: 'io.codearte.nexus-staging'
 
 
 allprojects {
-    version '1.11.1'
+    version '1.12.0'
     group 'com.klaytn.caver'
     description 'caver-java project'
 
@@ -96,7 +96,7 @@ configure(subprojects.findAll {it.name != 'integration-test' && it.name != 'andr
                     name = project.name
                     description = project.description
                     version = project.version
-                    url = "https://docs.klaytn.com/"
+                    url = "https://docs.kaia.io/"
                     licenses {
                         license {
                             name = "The Apache License, Version 2.0"

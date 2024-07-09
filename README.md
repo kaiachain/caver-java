@@ -1,20 +1,15 @@
-[![CircleCI](https://circleci.com/gh/klaytn/caver-java/tree/dev.svg?style=svg)](https://circleci.com/gh/klaytn/caver-java/tree/dev)
 [![Gitter](https://badges.gitter.im/klaytn/Caver-java.svg)](https://gitter.im/klaytn/Caver-java?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
-# Branch name will be changed
 
-We will change the `master` branch to `main` on Dec 15, 2022.
-After the branch policy change, please check your local or forked repository settings.
+# caver-java: Caver Java kaia Dapp API
 
-# caver-java: Caver Java Klaytn Dapp API
-
-caver-java is a lightweight, high modular, convenient Java and Android library to interact with clients (nodes) on the Klaytn network:
-This library is an interface which allows Java applications to easily communicate with [Klaytn](https://www.klaytn.com) network.
+caver-java is a lightweight, high modular, convenient Java and Android library to interact with clients (nodes) on the kaia network:
+This library is an interface which allows Java applications to easily communicate with [kaia](https://kaia.io) network.
 
 ## Features
-- Complete implementation of Klaytn’s JSON-RPC client API over HTTP and IPC
-- Support of Klaytn transaction, account, and account key types
+- Complete implementation of kaia’s JSON-RPC client API over HTTP and IPC
+- Support of kaia transaction, account, and account key types
 - Auto-generation of Java smart contract wrapper to deploy and execute a smart contract from native Java code
-- Creation of a new wallet and managing Klaytn wallets
+- Creation of a new wallet and managing kaia wallets
 - Command line tools
 - Android compatible
 
@@ -62,10 +57,10 @@ compile 'com.klaytn.caver:core:X.X.X'
 ```
 If you want to use Android dependency, just append -android at the end of version. (e.g. 1.5.4-android)
 
-You can find latest caver-java version at [release page](https://github.com/klaytn/caver-java/releases).
+You can find latest caver-java version at [release page](https://github.com/kaiachain/caver-java/releases).
 
 ## Start a Client
-If you want to run your own EN (Endpoint Node), see [EN Operation Guide](https://docs.klaytn.com/node/en) to set up.
+If you want to run your own EN (Endpoint Node), see [EN Operation Guide](https://docs.kaia.io/docs/nodes/endpoint-node/) to set up.
 
 ```java
 Caver caver = new Caver(Caver.DEFAULT_URL);
@@ -103,7 +98,7 @@ ValueTransfer valueTransfer = new ValueTransfer.Builder()
 //Sign to the transaction
 valueTransfer.sign(keyring);
 
-//Send a transaction to the klaytn blockchain platform (Klaytn)
+//Send a transaction to the kaia blockchain platform (kaia)
 Bytes32 result = caver.rpc.klay.sendRawTransaction(valueTransfer.getRawTransaction()).send();
 if(result.hasError()) {
     throw new RuntimeException(result.getError().getMessage());
@@ -114,9 +109,9 @@ TransactionReceiptProcessor transactionReceiptProcessor = new PollingTransaction
 TransactionReceipt.TransactionReceiptData transactionReceipt = transactionReceiptProcessor.waitForTransactionReceipt(result.getResult());
 ```
 
-If you have address and private key(s) of keyring, you can make keyring directly through [KeyringFactory.create](https://docs.klaytn.com/bapp/sdk/caver-java/getting-started#creating-a-keyring).
+If you have address and private key(s) of keyring, you can make keyring directly through [KeyringFactory.create](https://docs.kaia.io/docs/references/sdk/caver-java/get-started/#creating-a-keyring-).
 
-`<valueUnit>` means a unit of value that is used in Klaytn. It is defined as an enum type. Examples of possible values are as below.
+`<valueUnit>` means a unit of value that is used in kaia. It is defined as an enum type. Examples of possible values are as below.
 
 ```
 PEB, KPEB, MPEB, GPEB, STON, UKLAY, MKLAY, KLAY, KKLAY, MKLAY, GKLAY
@@ -130,7 +125,7 @@ Utils.convertFromPeb("1000000000000000000", KLAY).toBigInteger();  // 1
 ```
 
 ### Fee Delegation
-Klaytn provides [Fee Delegation](https://docs.klaytn.com/klaytn/design/transactions#fee-delegation) feature. Here's an example code.
+kaia provides [Fee Delegation](https://docs.kaia.io/docs/learn/transactions/fee-delegation/) feature. Here's an example code.
 When you are a sender:
 
 ```java
@@ -186,14 +181,14 @@ try {
 }
 ```
 After the fee payer gets the transaction from the sender, the fee payer can sign with `signAsFeePayer`. 
-For more information about Klaytn transaction types, visit [Transactions](https://docs.klaytn.com/klaytn/design/transactions).
+For more information about kaia transaction types, visit [Transactions](https://docs.kaia.io/docs/learn/transactions/).
 
 
-## Klaytn Accounts
-An account in Klaytn is a data structure containing information about a person's balance or a smart contract. If you require further information about Klaytn accounts, you can refer to the [Accounts](https://docs.klaytn.com/klaytn/design/account).
+## kaia Accounts
+An account in kaia is a data structure containing information about a person's balance or a smart contract. If you require further information about kaia accounts, you can refer to the [Accounts](https://docs.kaia.io/docs/learn/accounts/).
 
 ### Account Key
-An account key represents the key structure associated with an account.  Each account key has its own unique role. To get more details about the Klaytn account key, please read [Account Key](https://docs.klaytn.com/klaytn/design/account#account-key). These are 6 types of Account Keys in Klaytn:
+An account key represents the key structure associated with an account.  Each account key has its own unique role. To get more details about the kaia account key, please read [Account Key](https://docs.kaia.io/docs/learn/accounts/#account-key-). These are 6 types of Account Keys in kaia:
 - AccountKeyNil
 - AccountKeyLegacy
 - AccountKeyPublic
@@ -205,8 +200,8 @@ If you want to update the key of the given account, follow below steps :
 
 1. Create new private key(s) to use
 2. Create a keyring instance using the new private key(s) and the account address to update. 
-After the AccountKey has been successfully updated in Klaytn, you can use the Keyring instance created here.
-3. To update the AccountKey of Klaytn Account, create an Account instance using the toAccount function.
+After the AccountKey has been successfully updated in kaia, you can use the Keyring instance created here.
+3. To update the AccountKey of kaia Account, create an Account instance using the toAccount function.
 4. Create an AccountUpdate transaction (AccountUpdate/FeeDelegatedAccountUpdate/FeeDelegatedAccountUpdateWithRatio).
 5. Sign the AccountUpdate transaction
 6. Send signed transaction through `caver.rpc.klay.sendRawTransaction`
@@ -250,7 +245,7 @@ senderKeyring = caver.wallet.updateKeyring(newKeyring);
 
 ## Manage Contracts using Java Smart Contract Wrappers
 
-Caver supports `Contract` class to make it easy to interact with smart contract in Klaytn.
+Caver supports `Contract` class to make it easy to interact with smart contract in kaia.
 Before generating a wrapper code, you need to compile the smart contract first (Note: This will only work if solidity compiler is installed in your computer).
 
 ```shell
@@ -361,7 +356,7 @@ A caver-java fat jar is distributed with open repository. The 'caver-java' allow
 - Generate Solidity smart contract function wrappers
 Installation
 ```shell
-$ brew tap klaytn/klaytn
+$ brew tap kaiachain/kaia
 $ brew install caver-java
 ```
 After installation you can run command 'caver-java'

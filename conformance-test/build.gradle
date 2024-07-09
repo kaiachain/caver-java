@@ -1,5 +1,0 @@
-description "caver-java conformance test"
-
-dependencies {
-    compile project(':core')
-}

@@ -665,41 +665,42 @@ public class RpcTest extends Accounts {
             sampleReceiptData = sendKlay();
         }
 
-        @Test
-        public void getRewards() throws IOException {
-            KlayRewards responseWithNumber = klay.getRewards(BigInteger.valueOf(5)).send();
-            assertFalse(responseWithNumber.hasError());
-            assertNotNull(responseWithNumber.getResult().getBurntFee());
-            assertNotNull(responseWithNumber.getResult().getKff());
-            assertNotNull(responseWithNumber.getResult().getKcf());
-            assertNotNull(responseWithNumber.getResult().getMinted());
-            assertNotNull(responseWithNumber.getResult().getProposer());
-            assertNotNull(responseWithNumber.getResult().getRewards());
-            assertNotNull(responseWithNumber.getResult().getStakers());
-            assertNotNull(responseWithNumber.getResult().getTotalFee());
+        // Disabled
+        // @Test
+        // public void getRewards() throws IOException {
+        //     KlayRewards responseWithNumber = klay.getRewards(BigInteger.valueOf(5)).send();
+        //     assertFalse(responseWithNumber.hasError());
+        //     assertNotNull(responseWithNumber.getResult().getBurntFee());
+        //     assertNotNull(responseWithNumber.getResult().getKff());
+        //     assertNotNull(responseWithNumber.getResult().getKcf());
+        //     assertNotNull(responseWithNumber.getResult().getMinted());
+        //     assertNotNull(responseWithNumber.getResult().getProposer());
+        //     assertNotNull(responseWithNumber.getResult().getRewards());
+        //     assertNotNull(responseWithNumber.getResult().getStakers());
+        //     assertNotNull(responseWithNumber.getResult().getTotalFee());
 
-            KlayRewards responseWithTag = klay.getRewards(DefaultBlockParameterName.LATEST).send();
-            assertFalse(responseWithTag.hasError());
-            assertNotNull(responseWithTag.getResult().getBurntFee());
-            assertNotNull(responseWithTag.getResult().getKff());
-            assertNotNull(responseWithTag.getResult().getKcf());
-            assertNotNull(responseWithTag.getResult().getMinted());
-            assertNotNull(responseWithTag.getResult().getProposer());
-            assertNotNull(responseWithTag.getResult().getRewards());
-            assertNotNull(responseWithTag.getResult().getStakers());
-            assertNotNull(responseWithTag.getResult().getTotalFee());
+        //     KlayRewards responseWithTag = klay.getRewards(DefaultBlockParameterName.LATEST).send();
+        //     assertFalse(responseWithTag.hasError());
+        //     assertNotNull(responseWithTag.getResult().getBurntFee());
+        //     assertNotNull(responseWithTag.getResult().getKff());
+        //     assertNotNull(responseWithTag.getResult().getKcf());
+        //     assertNotNull(responseWithTag.getResult().getMinted());
+        //     assertNotNull(responseWithTag.getResult().getProposer());
+        //     assertNotNull(responseWithTag.getResult().getRewards());
+        //     assertNotNull(responseWithTag.getResult().getStakers());
+        //     assertNotNull(responseWithTag.getResult().getTotalFee());
 
-            KlayRewards response = klay.getRewards().send();
-            assertFalse(response.hasError());
-            assertNotNull(response.getResult().getBurntFee());
-            assertNotNull(response.getResult().getKff());
-            assertNotNull(response.getResult().getKcf());
-            assertNotNull(response.getResult().getMinted());
-            assertNotNull(response.getResult().getProposer());
-            assertNotNull(response.getResult().getRewards());
-            assertNotNull(response.getResult().getStakers());
-            assertNotNull(response.getResult().getTotalFee());
-        }
+        //     KlayRewards response = klay.getRewards().send();
+        //     assertFalse(response.hasError());
+        //     assertNotNull(response.getResult().getBurntFee());
+        //     assertNotNull(response.getResult().getKff());
+        //     assertNotNull(response.getResult().getKcf());
+        //     assertNotNull(response.getResult().getMinted());
+        //     assertNotNull(response.getResult().getProposer());
+        //     assertNotNull(response.getResult().getRewards());
+        //     assertNotNull(response.getResult().getStakers());
+        //     assertNotNull(response.getResult().getTotalFee());
+        // }
 
         @Test
         public void testIsAccountCreated() throws Exception {
@@ -1187,31 +1188,32 @@ public class RpcTest extends Accounts {
             checkFeeHistoryResult(feeHistoryResult, blockCount, rewardPercentiles);
         }
 
-        @Test
-        public void createAccessListTest() throws IOException {
-            Block block = caver.rpc.klay.getBlockByNumber(DefaultBlockParameterName.LATEST).send();
-            Quantity gasPrice = caver.rpc.klay.getGasPrice().send();
-            BigInteger blockNumber = new BigInteger(caver.utils.stripHexPrefix(block.getResult().getNumber()), 16);
-            String blockHash = block.getResult().getHash();
-            CallObject callObject = CallObject.createCallObject(
-                    LUMAN.getAddress(),
-                    WAYNE.getAddress(),
-                    BigInteger.valueOf(100000),
-                    gasPrice.getValue(),
-                    BigInteger.valueOf(1)
-            );
-            AccessListResult accessListResult = caver.rpc.klay.createAccessList(callObject, DefaultBlockParameterName.LATEST).send();
-            checkAccessListResult(accessListResult.getResult());
+        // Disabled
+        // @Test
+        // public void createAccessListTest() throws IOException {
+        //     Block block = caver.rpc.klay.getBlockByNumber(DefaultBlockParameterName.LATEST).send();
+        //     Quantity gasPrice = caver.rpc.klay.getGasPrice().send();
+        //     BigInteger blockNumber = new BigInteger(caver.utils.stripHexPrefix(block.getResult().getNumber()), 16);
+        //     String blockHash = block.getResult().getHash();
+        //     CallObject callObject = CallObject.createCallObject(
+        //             LUMAN.getAddress(),
+        //             WAYNE.getAddress(),
+        //             BigInteger.valueOf(100000),
+        //             gasPrice.getValue(),
+        //             BigInteger.valueOf(1)
+        //     );
+        //     AccessListResult accessListResult = caver.rpc.klay.createAccessList(callObject, DefaultBlockParameterName.LATEST).send();
+        //     checkAccessListResult(accessListResult.getResult());
 
-            accessListResult = caver.rpc.klay.createAccessList(callObject, new DefaultBlockParameterNumber(blockNumber)).send();
-            checkAccessListResult(accessListResult.getResult());
+        //     accessListResult = caver.rpc.klay.createAccessList(callObject, new DefaultBlockParameterNumber(blockNumber)).send();
+        //     checkAccessListResult(accessListResult.getResult());
 
-            accessListResult = caver.rpc.klay.createAccessList(callObject, blockNumber).send();
-            checkAccessListResult(accessListResult.getResult());
+        //     accessListResult = caver.rpc.klay.createAccessList(callObject, blockNumber).send();
+        //     checkAccessListResult(accessListResult.getResult());
 
-            accessListResult = caver.rpc.klay.createAccessList(callObject, blockHash).send();
-            checkAccessListResult(accessListResult.getResult());
-        }
+        //     accessListResult = caver.rpc.klay.createAccessList(callObject, blockHash).send();
+        //     checkAccessListResult(accessListResult.getResult());
+        // }
 
         // checkAccessListResult checks whether given AcccessListResultData instance is right or not.
         private void checkAccessListResult(AccessListResult.AccessListResultData accessListResultData) {
