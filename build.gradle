@@ -112,9 +112,9 @@ configure(subprojects.findAll {it.name != 'integration-test' && it.name != 'andr
                         }
                     }
                     scm {
-                        connection = "scm:git:https://*.git"
-                        developerConnection = "scm:git://*.git"
-                        url = "https://*.git"
+                        connection = "scm:git:https://github.com/kaiachain/caver-java.git"
+                        developerConnection = "scm:git:https://github.com/kaiachain/caver-java.git"
+                        url = "https://github.com/kaiachain/caver-java.git"
                     }
                 }
             }
