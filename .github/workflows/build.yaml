@@ -28,9 +28,7 @@ jobs:
 
 
   unit_test:
-
     runs-on: ubuntu-20.04
-    
     steps:
       - uses: actions/checkout@v4
       - name: pull_klaytn_image 
@@ -64,3 +62,20 @@ jobs:
         run: java --version && gradle --version
       - name: Test 
         run: ./gradlew clean test --debug --scan
+
+  build_test:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check rc version
+        run: | 
+            if [ -z "$CIRCLE_TAG" ]; then
+              echo "this is not RC version"
+            else
+              sed -i "s/version '.*'/version '${CIRCLE_TAG:1}'/" build.gradle
+              awk '/version '\''/' build.gradle
+            fi
+      - name: build_test
+        run: |
+          ./gradlew clean
+          ./gradlew build --debug -x test
