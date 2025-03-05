@@ -1,0 +1,21 @@
+name: Test-docs
+
+on:
+  push:
+    branches:
+      # - main
+      - gha-cicd
+    # tags:
+    #   - 'v*'
+
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  docs_test:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Docs Test
+        run: ./gradlew javadoc
