@@ -4,7 +4,7 @@ on:
   push:
     branches:
       # - main
-      - gha-cicd
+      - feat/gha-cicd
     # tags:
     #   - 'v*'
 
