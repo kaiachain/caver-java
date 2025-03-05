@@ -49,6 +49,17 @@ jobs:
           do
               if curl --fail -H "Content-Type: application/json" --data '{"jsonrpc":"2.0","method":"rpc_modules","params":[],"id":1}' http://localhost:8551 2>/dev/null; then
                   echo "Klaytn RPC server is up"
+                  break
+              else
+                  echo "wait for Klaytn RPC server..."
+                  sleep 5
+              fi
+              RETRY=$(($RETRY+5))
+          done
+          if [ $RETRY -eq $MAXRETRY ]; then
+              echo "failed to connect Klaytn RPC server"
+              exit 1
+          fi
       - name: Check environment
         run: java --version && gradle --version
       - name: Test 
