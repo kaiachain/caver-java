@@ -8,12 +8,12 @@ defaults: &defaults
 machine_ubuntu: &machine_ubuntu
   working_directory: ~/circleci-caver-java-major
   machine:
-    image: ubuntu-2004:202010-01
+    image: ubuntu-2004:2024.11.1
 
 android_machine_ubuntu: &android_machine_ubuntu
   working_directory: ~/circleci-caver-java-android
   machine:
-    image: android:202102-01
+    image: android:2024.11.1
   resource_class: large
 
 commands:
