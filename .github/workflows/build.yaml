@@ -1,5 +1,9 @@
 name: Test-docs
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   push:
     branches:
@@ -14,8 +18,25 @@ on:
 
 jobs:
   docs_test:
+    concurrency:
+      group:  ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v4
       - name: Docs Test
         run: ./gradlew javadoc
+
+
+
+  unit_test:
+    concurrency:
+      group:  ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Pull 
+        run: |
+          docker pull klaytn/build_base:latest
+          docker image tag klaytn/build_base:latest klaytn
