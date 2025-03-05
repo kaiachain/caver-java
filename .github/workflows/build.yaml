@@ -30,6 +30,7 @@ jobs:
   unit_test:
 
     runs-on: ubuntu-20.04
+    
     steps:
       - uses: actions/checkout@v4
       - name: pull_klaytn_image 
@@ -39,6 +40,7 @@ jobs:
       - name: start_test_network
         run: | 
           docker compose up -d 
+        working-directory: ./.circleci/images
       - name: check_test_network
         run: |
           MAXRETRY=600
@@ -51,4 +53,3 @@ jobs:
         run: java --version && gradle --version
       - name: Test 
         run: ./gradlew clean test --debug --scan
-        
