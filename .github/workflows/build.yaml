@@ -18,9 +18,7 @@ on:
 
 jobs:
   docs_test:
-    concurrency:
-      group:  ${{ github.workflow }}-${{ github.ref }}
-      cancel-in-progress: true
+
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v4
@@ -30,9 +28,7 @@ jobs:
 
 
   unit_test:
-    concurrency:
-      group:  ${{ github.workflow }}-${{ github.ref }}
-      cancel-in-progress: true
+
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v4
