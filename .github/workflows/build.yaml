@@ -89,7 +89,7 @@ jobs:
           sed -i -e '$ainclude '\''android_instrumented_test'\''' settings.gradle
       - name: setup_android_test_files
         run: |
-          bash .circleci/setup_android_instrumented_test.sh
+          bash .circleci/setup_android_instrumented_test-gha.sh
       - name: pull_klaytn_image 
         run: |
           docker pull klaytn/build_base:lates
