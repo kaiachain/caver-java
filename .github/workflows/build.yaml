@@ -92,8 +92,8 @@ jobs:
           bash .circleci/setup_android_instrumented_test-gha.sh
       - name: pull_klaytn_image 
         run: |
-          docker pull klaytn/build_base:lates
-          docker image tag klaytn/build_base:
+          docker pull klaytn/build_base:latest
+          docker image tag klaytn/build_base:latest klaytn
       - name: start_test_network
         run: | 
           docker compose up -d 
