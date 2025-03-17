@@ -135,7 +135,7 @@ jobs:
           awk '/ext.web3jVersion = '\''/' build.gradle
       - name: Create avd
         run: |
-          sudo apt update && sudo apt install android-sdk -y
+          sudo apt update && sudo apt install sdkmanager -y
           SYSTEM_IMAGES="system-images;android-29;default;x86"
           sdkmanager "$SYSTEM_IMAGES"
           echo "no" | avdmanager --verbose create avd -n test -k "$SYSTEM_IMAGES"
