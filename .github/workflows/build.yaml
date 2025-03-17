@@ -133,13 +133,25 @@ jobs:
 
           awk '/version '\''/' build.gradle
           awk '/ext.web3jVersion = '\''/' build.gradle
-      - name: Create avd
+
+      - name: Enable KVM
         run: |
-          sudo apt-get update && sudo apt-get install -y unzip wget
-          wget https://dl.google.com/android/repository/commandlinetools-linux-10406996_latest.zip -O cmdline-tools.zip
-          mkdir -p $ANDROID_HOME/cmdline-tools
-          unzip -q cmdline-tools.zip -d $ANDROID_HOME/cmdline-tools
-          mv $ANDROID_HOME/cmdline-tools/cmdline-tools $ANDROID_HOME/cmdline-tools/latest
-          SYSTEM_IMAGES="system-images;android-29;default;x86"
-          $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "$SYSTEM_IMAGES"
-          echo "no" | avdmanager --verbose create avd -n test -k "$SYSTEM_IMAGES"
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: run tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 29
+          script: ./gradlew connectedDebugAndroidTest --debug --stacktrace
+      # - name: Create avd
+      #   run: |
+      #     sudo apt-get update && sudo apt-get install -y unzip wget
+      #     wget https://dl.google.com/android/repository/commandlinetools-linux-10406996_latest.zip -O cmdline-tools.zip
+      #     mkdir -p $ANDROID_HOME/cmdline-tools
+      #     unzip -q cmdline-tools.zip -d $ANDROID_HOME/cmdline-tools
+      #     mv $ANDROID_HOME/cmdline-tools/cmdline-tools $ANDROID_HOME/cmdline-tools/latest
+      #     SYSTEM_IMAGES="system-images;android-29;default;x86"
+      #     $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "$SYSTEM_IMAGES"
+      #     echo "no" | avdmanager --verbose create avd -n test -k "$SYSTEM_IMAGES"
