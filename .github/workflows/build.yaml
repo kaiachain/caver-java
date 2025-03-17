@@ -145,13 +145,9 @@ jobs:
         with:
           api-level: 29
           script: ./gradlew connectedDebugAndroidTest --debug --stacktrace
-      # - name: Create avd
-      #   run: |
-      #     sudo apt-get update && sudo apt-get install -y unzip wget
-      #     wget https://dl.google.com/android/repository/commandlinetools-linux-10406996_latest.zip -O cmdline-tools.zip
-      #     mkdir -p $ANDROID_HOME/cmdline-tools
-      #     unzip -q cmdline-tools.zip -d $ANDROID_HOME/cmdline-tools
-      #     mv $ANDROID_HOME/cmdline-tools/cmdline-tools $ANDROID_HOME/cmdline-tools/latest
-      #     SYSTEM_IMAGES="system-images;android-29;default;x86"
-      #     $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "$SYSTEM_IMAGES"
-      #     echo "no" | avdmanager --verbose create avd -n test -k "$SYSTEM_IMAGES"
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-results
+          path: android_instrumented_test/build/reports/androidTests/connected/flavors/debugAndroidTest
