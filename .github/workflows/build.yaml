@@ -21,6 +21,7 @@ jobs:
   check_tag:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v4
     - name: Check tag version
       run: |
         echo "tag version is " ${{ github.ref }}
