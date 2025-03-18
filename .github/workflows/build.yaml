@@ -9,8 +9,8 @@ on:
     branches:
       # - main
       - feat/gha-cicd
-    # tags:
-    #   - 'v*'
+    tags:
+      - 'v*'
 
   pull_request:
     branches:
@@ -24,7 +24,7 @@ jobs:
     - uses: actions/checkout@v4
     - name: Check tag version
       run: |
-        echo "tag version is " ${GITHUB_REF#refs/tags/}
+        echo "tag version is " ${{ github.ref }},
         file_version=v$(.circleci/version.sh)
         echo "file version is " $file_version
 
