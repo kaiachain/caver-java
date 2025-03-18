@@ -24,6 +24,8 @@ jobs:
     - name: Check tag version
       run: |
         echo "tag version is " ${{ github.ref }}
+        ls -lah
+        sh .circleci/version.sh
         file_version=v$(.circleci/version.sh)
         echo "file version is " $file_version
 
