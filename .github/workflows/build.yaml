@@ -161,27 +161,27 @@ jobs:
   #         path: android_instrumented_test/build/reports/androidTests/connected/flavors/debugAndroidTest
 
   # build_test_android:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: check_android_version
-        run: |
-          version=$(.circleci/version.sh)
-          sed -i "s/version '.*'/version '${version}-android'/" build.gradle
-          sed -i "s/java.util.concurrent.CompletableFuture/java8.util.concurrent.CompletableFuture/" core/src/test/java/com/klaytn/caver/legacy/scenario/FastTransactionManagerIT.java
+    # runs-on: ubuntu-latest
+    # steps:
+    #   - uses: actions/checkout@v4
+    #   - name: check_android_version
+    #     run: |
+    #       version=$(.circleci/version.sh)
+    #       sed -i "s/version '.*'/version '${version}-android'/" build.gradle
+    #       sed -i "s/java.util.concurrent.CompletableFuture/java8.util.concurrent.CompletableFuture/" core/src/test/java/com/klaytn/caver/legacy/scenario/FastTransactionManagerIT.java
 
-          if [ -z "$CIRCLE_TAG" ]; then
-            echo "this is not RC version"
-          else
-            echo "trigger CIRCLE_TAG $CIRCLE_TAG"
-            sed -i "s/version '.*'/version '${CIRCLE_TAG:1}-android'/" build.gradle
-            sed -i "s/java.util.concurrent.CompletableFuture/java8.util.concurrent.CompletableFuture/" core/src/test/java/com/klaytn/caver/legacy/scenario/FastTransactionManagerIT.java
-          fi
+    #       if [ -z "$CIRCLE_TAG" ]; then
+    #         echo "this is not RC version"
+    #       else
+    #         echo "trigger CIRCLE_TAG $CIRCLE_TAG"
+    #         sed -i "s/version '.*'/version '${CIRCLE_TAG:1}-android'/" build.gradle
+    #         sed -i "s/java.util.concurrent.CompletableFuture/java8.util.concurrent.CompletableFuture/" core/src/test/java/com/klaytn/caver/legacy/scenario/FastTransactionManagerIT.java
+    #       fi
 
-          awk '/version '\''/' build.gradle
-          awk '/ext.web3jVersion = '\''/' build.gradle
+    #       awk '/version '\''/' build.gradle
+    #       awk '/ext.web3jVersion = '\''/' build.gradle
 
-      - name: build_test
-        run: |
-          ./gradlew clean
-          ./gradlew build --debug -x test
+    #   - name: build_test
+    #     run: |
+    #       ./gradlew clean
+    #       ./gradlew build --debug -x test
