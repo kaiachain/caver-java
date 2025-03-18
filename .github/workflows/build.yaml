@@ -8,7 +8,7 @@ on:
   push:
     branches:
       # - main
-      - feat/gha-cicd
+      # - feat/gha-cicd
     tags:
       - 'v*'
 
