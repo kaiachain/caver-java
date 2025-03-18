@@ -24,10 +24,16 @@ jobs:
     - uses: actions/checkout@v4
     - name: Check tag version
       run: |
-        echo "tag version is " ${{ github.ref }},
+        TAG_NAME="${${{ github.ref }}#refs/tags/}"
+        echo "tag version is " $TAG_NAME
         file_version=v$(.circleci/version.sh)
         echo "file version is " $file_version
-
+        if [ $file_version == ${CIRCLE_TAG%-*} ]; then
+          echo "verification pass"
+        else
+          echo "It's not same version."
+          exit 1
+        fi
 
   # docs_test:
   #   runs-on: ubuntu-latest
