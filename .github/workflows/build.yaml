@@ -24,7 +24,8 @@ jobs:
     - uses: actions/checkout@v4
     - name: Check tag version
       run: |
-        TAG_NAME="${${{ github.ref }}#refs/tags/}"
+        TAG=${{ github.ref }}
+        TAG_NAME="${TAG#refs/tags/}"
         echo "tag version is " $TAG_NAME
         file_version=v$(.circleci/version.sh)
         echo "file version is " $file_version
