@@ -37,6 +37,7 @@ jobs:
     #     fi
     - name: tagger_verify
       run: |
+        TAG=${{ github.ref }}
         TAG_NAME="${TAG#refs/tags/}"
         TAGGER=$(git for-each-ref --format='%(tagger)' refs/tags/$TAG_NAME | sed 's/ .*//')
         echo $TAGGER
