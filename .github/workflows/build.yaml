@@ -18,7 +18,7 @@ on:
 
 jobs:
 
-  check_tag:
+  tag_verify:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -35,6 +35,11 @@ jobs:
           echo "It's not same version."
           exit 1
         fi
+
+  tagger_verify:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
     - name: tagger_verify
       run: |
         TAG=${{ github.ref }}
@@ -47,6 +52,7 @@ jobs:
           echo "only circleci-klaytn can tagging major version"
           exit 1
         fi
+
   docs_test:
     runs-on: ubuntu-latest
     steps:
