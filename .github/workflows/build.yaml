@@ -16,197 +16,230 @@ on:
     branches:
       - main
 
+env:
+  TAG: ${{ github.ref }}
+  TAG_NAME: ${TAG#refs/tags/}
+
 jobs:
 
-  tag_verify:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-    - name: tag_verify
-      run: |
-        TAG=${{ github.ref }}
-        TAG_NAME="${TAG#refs/tags/}"
-        echo "tag version is " $TAG_NAME
-        file_version=v$(.circleci/version.sh)
-        echo "file version is " $file_version
-        if [ $file_version == ${TAG_NAME%-*} ]; then
-          echo "verification pass"
-        else
-          echo "It's not same version."
-          exit 1
-        fi
+  # tag_verify:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/checkout@v4
+  #   - name: tag_verify
+  #     run: |
+  #       TAG=${{ github.ref }}
+  #       TAG_NAME="${TAG#refs/tags/}"
+  #       echo "tag version is " $TAG_NAME
+  #       file_version=v$(.circleci/version.sh)
+  #       echo "file version is " $file_version
+  #       if [ $file_version == ${TAG_NAME%-*} ]; then
+  #         echo "verification pass"
+  #       else
+  #         echo "It's not same version."
+  #         exit 1
+  #       fi
 
-  tagger_verify:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-    - name: tagger_verify
-      run: |
-        TAG=${{ github.ref }}
-        TAG_NAME="${TAG#refs/tags/}"
-        TAGGER=$(git for-each-ref --format='%(tagger)' refs/tags/$TAG_NAME | sed 's/ .*//')
-        echo $TAGGER
-        if [[ $TAGGER == 'circleci-klaytn' ]]; then
-          echo "Pass! Tagger is circleci-klaytn"
-        else
-          echo "only circleci-klaytn can tagging major version"
-          exit 1
-        fi
+  # tagger_verify:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/checkout@v4
+  #   - name: tagger_verify
+  #     run: |
+  #       TAG=${{ github.ref }}
+  #       TAG_NAME="${TAG#refs/tags/}"
+  #       TAGGER=$(git for-each-ref --format='%(tagger)' refs/tags/$TAG_NAME | sed 's/ .*//')
+  #       echo $TAGGER
+  #       if [[ $TAGGER == 'circleci-klaytn' ]]; then
+  #         echo "Pass! Tagger is circleci-klaytn"
+  #       else
+  #         echo "only circleci-klaytn can tagging major version"
+  #         exit 1
+  #       fi
 
-  docs_test:
+  # docs_test:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Docs Test
+  #       run: ./gradlew javadoc
+
+  # unit_test:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: pull_klaytn_image 
+  #       run: |
+  #         docker pull klaytn/build_base:latest
+  #         docker image tag klaytn/build_base:latest klaytn
+  #     - name: start_test_network
+  #       run: | 
+  #         docker compose up -d 
+  #       working-directory: ./.circleci/images
+  #     - name: check_test_network
+  #       run: |
+  #         MAXRETRY=600
+  #         RETRY=0
+  #         while [ $RETRY -lt $MAXRETRY ]
+  #         do
+  #             if curl --fail -H "Content-Type: application/json" --data '{"jsonrpc":"2.0","method":"rpc_modules","params":[],"id":1}' http://localhost:8551 2>/dev/null; then
+  #                 echo "Klaytn RPC server is up"
+  #                 break
+  #             else
+  #                 echo "wait for Klaytn RPC server..."
+  #                 sleep 5
+  #             fi
+  #             RETRY=$(($RETRY+5))
+  #         done
+  #         if [ $RETRY -eq $MAXRETRY ]; then
+  #             echo "failed to connect Klaytn RPC server"
+  #             exit 1
+  #         fi
+  #     - name: Check environment
+  #       run: java --version && gradle --version
+  #     - name: Test 
+  #       run: ./gradlew clean test --debug --scan
+
+  # build_test:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Check rc version
+  #       run: | 
+  #           if [ -z "$TAG_NAME" ]; then
+  #             echo "this is not RC version"
+  #           else
+  #             sed -i "s/version '.*'/version '${TAG_NAME:1}'/" build.gradle
+  #             awk '/version '\''/' build.gradle
+  #           fi
+  #     - name: build_test
+  #       run: |
+  #         ./gradlew clean
+  #         ./gradlew build --debug -x test
+
+  # unit_test_android:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: include_android_instrumented_test_as_subproject
+  #       run: |
+  #         sed -i -e '$ainclude '\''android_instrumented_test'\''' settings.gradle
+  #     - name: setup_android_test_files
+  #       run: |
+  #         bash .circleci/setup_android_instrumented_test-gha.sh
+  #     - name: pull_klaytn_image 
+  #       run: |
+  #         docker pull klaytn/build_base:latest
+  #         docker image tag klaytn/build_base:latest klaytn
+  #     - name: start_test_network
+  #       run: | 
+  #         docker compose up -d 
+  #       working-directory: ./.circleci/images
+  #     - name: check_test_network
+  #       run: |
+  #         MAXRETRY=600
+  #         RETRY=0
+  #         while [ $RETRY -lt $MAXRETRY ]
+  #         do
+  #             if curl --fail -H "Content-Type: application/json" --data '{"jsonrpc":"2.0","method":"rpc_modules","params":[],"id":1}' http://localhost:8551 2>/dev/null; then
+  #                 echo "Klaytn RPC server is up"
+  #                 break
+  #             else
+  #                 echo "wait for Klaytn RPC server..."
+  #                 sleep 5
+  #             fi
+  #             RETRY=$(($RETRY+5))
+  #         done
+  #         if [ $RETRY -eq $MAXRETRY ]; then
+  #             echo "failed to connect Klaytn RPC server"
+  #             exit 1
+  #         fi
+  #     - name: check_android_version
+  #       run: |
+  #         version=$(.circleci/version.sh)
+  #         sed -i "s/version '.*'/version '${version}-android'/" build.gradle
+  #         sed -i "s/java.util.concurrent.CompletableFuture/java8.util.concurrent.CompletableFuture/" core/src/test/java/com/klaytn/caver/legacy/scenario/FastTransactionManagerIT.java
+
+  #         if [ -z "$TAG_NAME" ]; then
+  #           echo "this is not RC version"
+  #         else
+  #           echo "trigger TAG_NAME $TAG_NAME"
+  #           sed -i "s/version '.*'/version '${TAG_NAME:1}-android'/" build.gradle
+  #           sed -i "s/java.util.concurrent.CompletableFuture/java8.util.concurrent.CompletableFuture/" core/src/test/java/com/klaytn/caver/legacy/scenario/FastTransactionManagerIT.java
+  #         fi
+
+  #         awk '/version '\''/' build.gradle
+  #         awk '/ext.web3jVersion = '\''/' build.gradle
+
+  #     - name: Enable KVM
+  #       run: |
+  #         echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+  #         sudo udevadm control --reload-rules
+  #         sudo udevadm trigger --name-match=kvm
+
+  #     - name: run tests
+  #       uses: reactivecircus/android-emulator-runner@v2
+  #       with:
+  #         api-level: 29
+  #         script: ./gradlew connectedDebugAndroidTest --debug --stacktrace
+  #     - name: Upload test results
+  #       if: always()
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: test-results
+  #         path: android_instrumented_test/build/reports/androidTests/connected/flavors/debugAndroidTest
+
+  # build_test_android:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: check_android_version
+  #       run: |
+  #         version=$(.circleci/version.sh)
+  #         sed -i "s/version '.*'/version '${version}-android'/" build.gradle
+  #         sed -i "s/java.util.concurrent.CompletableFuture/java8.util.concurrent.CompletableFuture/" core/src/test/java/com/klaytn/caver/legacy/scenario/FastTransactionManagerIT.java
+
+  #         if [ -z "$TAG_NAME" ]; then
+  #           echo "this is not RC version"
+  #         else
+  #           echo "trigger TAG_NAME $TAG_NAME"
+  #           sed -i "s/version '.*'/version '${TAG_NAME:1}-android'/" build.gradle
+  #           sed -i "s/java.util.concurrent.CompletableFuture/java8.util.concurrent.CompletableFuture/" core/src/test/java/com/klaytn/caver/legacy/scenario/FastTransactionManagerIT.java
+  #         fi
+
+  #         awk '/version '\''/' build.gradle
+  #         awk '/ext.web3jVersion = '\''/' build.gradle
+
+  #     - name: build_test
+  #       run: |
+  #         ./gradlew clean
+  #         ./gradlew build --debug -x test
+
+
+  release_PR:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Docs Test
-        run: ./gradlew javadoc
-
-  unit_test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: pull_klaytn_image 
+      - name: Push release branch
         run: |
-          docker pull klaytn/build_base:latest
-          docker image tag klaytn/build_base:latest klaytn
-      - name: start_test_network
-        run: | 
-          docker compose up -d 
-        working-directory: ./.circleci/images
-      - name: check_test_network
+          echo "push to release branch: /release/${TAG_NAME%-*}"
+          git checkout -b release/${TAG_NAME%-*}
+          git push origin release/${TAG_NAME%-*}
+      - name: Install hub
         run: |
-          MAXRETRY=600
-          RETRY=0
-          while [ $RETRY -lt $MAXRETRY ]
-          do
-              if curl --fail -H "Content-Type: application/json" --data '{"jsonrpc":"2.0","method":"rpc_modules","params":[],"id":1}' http://localhost:8551 2>/dev/null; then
-                  echo "Klaytn RPC server is up"
-                  break
-              else
-                  echo "wait for Klaytn RPC server..."
-                  sleep 5
-              fi
-              RETRY=$(($RETRY+5))
-          done
-          if [ $RETRY -eq $MAXRETRY ]; then
-              echo "failed to connect Klaytn RPC server"
-              exit 1
-          fi
-      - name: Check environment
-        run: java --version && gradle --version
-      - name: Test 
-        run: ./gradlew clean test --debug --scan
-
-  build_test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Check rc version
-        run: | 
-            if [ -z "$CIRCLE_TAG" ]; then
-              echo "this is not RC version"
-            else
-              sed -i "s/version '.*'/version '${CIRCLE_TAG:1}'/" build.gradle
-              awk '/version '\''/' build.gradle
-            fi
-      - name: build_test
+          curl -sSLf https://github.com/github/hub/releases/download/v2.12.3/hub-linux-amd64-2.12.3.tgz | \
+            tar zxf - --strip-components=1 -C /tmp && \
+            sudo mv /tmp/bin/hub /usr/local/bin/hub
+          type hub
+      - name: Create pull request
         run: |
-          ./gradlew clean
-          ./gradlew build --debug -x test
-
-  unit_test_android:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: include_android_instrumented_test_as_subproject
-        run: |
-          sed -i -e '$ainclude '\''android_instrumented_test'\''' settings.gradle
-      - name: setup_android_test_files
-        run: |
-          bash .circleci/setup_android_instrumented_test-gha.sh
-      - name: pull_klaytn_image 
-        run: |
-          docker pull klaytn/build_base:latest
-          docker image tag klaytn/build_base:latest klaytn
-      - name: start_test_network
-        run: | 
-          docker compose up -d 
-        working-directory: ./.circleci/images
-      - name: check_test_network
-        run: |
-          MAXRETRY=600
-          RETRY=0
-          while [ $RETRY -lt $MAXRETRY ]
-          do
-              if curl --fail -H "Content-Type: application/json" --data '{"jsonrpc":"2.0","method":"rpc_modules","params":[],"id":1}' http://localhost:8551 2>/dev/null; then
-                  echo "Klaytn RPC server is up"
-                  break
-              else
-                  echo "wait for Klaytn RPC server..."
-                  sleep 5
-              fi
-              RETRY=$(($RETRY+5))
-          done
-          if [ $RETRY -eq $MAXRETRY ]; then
-              echo "failed to connect Klaytn RPC server"
-              exit 1
-          fi
-      - name: check_android_version
-        run: |
-          version=$(.circleci/version.sh)
-          sed -i "s/version '.*'/version '${version}-android'/" build.gradle
-          sed -i "s/java.util.concurrent.CompletableFuture/java8.util.concurrent.CompletableFuture/" core/src/test/java/com/klaytn/caver/legacy/scenario/FastTransactionManagerIT.java
-
-          if [ -z "$CIRCLE_TAG" ]; then
-            echo "this is not RC version"
+          version=$(hub pr list -s open -L 10 -f "%H%n")
+          echo $version
+          if [[ $version == *"release/${TAG_NAME%-*}"* ]]; then
+            echo "PR already exist"
           else
-            echo "trigger CIRCLE_TAG $CIRCLE_TAG"
-            sed -i "s/version '.*'/version '${CIRCLE_TAG:1}-android'/" build.gradle
-            sed -i "s/java.util.concurrent.CompletableFuture/java8.util.concurrent.CompletableFuture/" core/src/test/java/com/klaytn/caver/legacy/scenario/FastTransactionManagerIT.java
+            echo "hub pull-request -m "[Main] release/$TAG_NAME QA Signoff" -b $CIRCLE_PROJECT_USERNAME:main -h $CIRCLE_PROJECT_USERNAME:${TAG_NAME%-*}"
+            echo -e "[Main] release/${TAG_NAME%-*} QA Sign-off\n\nThis PR is automatically created by CI to release a new official version of $CIRCLE_PROJECT_REPONAME.\n\nWhen this PR is approved by QA team, a new version will be released." | hub pull-request -b $CIRCLE_PROJECT_USERNAME:main -h $CIRCLE_PROJECT_USERNAME:release/${TAG_NAME%-*} -r $GITHUB_reviewer -l circleci -F-
           fi
-
-          awk '/version '\''/' build.gradle
-          awk '/ext.web3jVersion = '\''/' build.gradle
-
-      - name: Enable KVM
-        run: |
-          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
-          sudo udevadm control --reload-rules
-          sudo udevadm trigger --name-match=kvm
-
-      - name: run tests
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 29
-          script: ./gradlew connectedDebugAndroidTest --debug --stacktrace
-      - name: Upload test results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-results
-          path: android_instrumented_test/build/reports/androidTests/connected/flavors/debugAndroidTest
-
-  build_test_android:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: check_android_version
-        run: |
-          version=$(.circleci/version.sh)
-          sed -i "s/version '.*'/version '${version}-android'/" build.gradle
-          sed -i "s/java.util.concurrent.CompletableFuture/java8.util.concurrent.CompletableFuture/" core/src/test/java/com/klaytn/caver/legacy/scenario/FastTransactionManagerIT.java
-
-          if [ -z "$CIRCLE_TAG" ]; then
-            echo "this is not RC version"
-          else
-            echo "trigger CIRCLE_TAG $CIRCLE_TAG"
-            sed -i "s/version '.*'/version '${CIRCLE_TAG:1}-android'/" build.gradle
-            sed -i "s/java.util.concurrent.CompletableFuture/java8.util.concurrent.CompletableFuture/" core/src/test/java/com/klaytn/caver/legacy/scenario/FastTransactionManagerIT.java
-          fi
-
-          awk '/version '\''/' build.gradle
-          awk '/ext.web3jVersion = '\''/' build.gradle
-
-      - name: build_test
-        run: |
-          ./gradlew clean
-          ./gradlew build --debug -x test
