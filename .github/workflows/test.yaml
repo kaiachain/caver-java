@@ -217,6 +217,8 @@ jobs:
 
 
   release_PR:
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     permissions:
       contents: write
     runs-on: ubuntu-latest
