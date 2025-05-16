@@ -243,3 +243,55 @@ jobs:
             echo "hub pull-request -m "[Main] release/$TAG_NAME QA Signoff" -b $CIRCLE_PROJECT_USERNAME:main -h $CIRCLE_PROJECT_USERNAME:${TAG_NAME%-*}"
             echo -e "[Main] release/${TAG_NAME%-*} QA Sign-off\n\nThis PR is automatically created by CI to release a new official version of $CIRCLE_PROJECT_REPONAME.\n\nWhen this PR is approved by QA team, a new version will be released." | hub pull-request -b $CIRCLE_PROJECT_USERNAME:main -h $CIRCLE_PROJECT_USERNAME:release/${TAG_NAME%-*} -r $GITHUB_reviewer -l circleci -F-
           fi
+
+  major_publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: check RC version
+        run: |
+            if [ -z "$TAG_NAME" ]; then
+              echo "this is not RC version"
+            else
+              sed -i "s/version '.*'/version '${TAG_NAME:1}'/" build.gradle
+              awk '/version '\''/' build.gradle
+            fi
+      - name: Publish major version
+        run: |
+              version=v$(.circleci/version.sh)
+              echo "Publishing a major release! version=$version"
+              ./gradlew clean publish --stacktrace --debug
+              ./gradlew closeAndReleaseRepository --stacktrace --debug
+  
+  major_tagging:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: check RC version
+        run: |
+            if [ -z "$TAG_NAME" ]; then
+              echo "this is not RC version"
+            else
+              sed -i "s/version '.*'/version '${TAG_NAME:1}'/" build.gradle
+              awk '/version '\''/' build.gradle
+            fi
+      - name: Generate tag 
+        run: |
+              current_version=$(.circleci/version.sh)
+              echo "git tag v$current_version"
+              git config --global user.email "team.devops@groundx.xyz"
+              git config --global user.name "circleci-klaytn"
+              git tag -a v$current_version -m "$CIRCLE_STAGE"
+              git push origin v$current_version
+
+      - name: delete release branch
+        run: |
+              #delete release branch. it trigger by merge title
+              version=v$(.circleci/version.sh)
+
+              if [[ "release/v" = $(git log --oneline -1 | grep -o "release/v") ]]; then
+                echo "Delete branch release/$version"
+                git push origin --delete release/$version
+              else
+                echo "Need to delete branch manually"
+              fi  
