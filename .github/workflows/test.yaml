@@ -18,7 +18,7 @@ on:
 
 env:
   TAG: ${{ github.ref }}
-  TAG_NAME: ${TAG#refs/tags/}
+  
 
 jobs:
 
@@ -224,6 +224,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Push release branch
         run: |
+          TAG_NAME: ${TAG#refs/tags/} 
           echo "push to release branch: /release/${TAG_NAME%-*}"
           git checkout -b release/${TAG_NAME%-*}
           git push origin release/${TAG_NAME%-*}
@@ -235,6 +236,7 @@ jobs:
           type hub
       - name: Create pull request
         run: |
+          TAG_NAME: ${TAG#refs/tags/}
           version=$(hub pr list -s open -L 10 -f "%H%n")
           echo $version
           if [[ $version == *"release/${TAG_NAME%-*}"* ]]; then
@@ -250,6 +252,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: check RC version
         run: |
+            TAG_NAME: ${TAG#refs/tags/}
             if [ -z "$TAG_NAME" ]; then
               echo "this is not RC version"
             else
@@ -269,6 +272,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: check RC version
         run: |
+            TAG_NAME: ${TAG#refs/tags/}
             if [ -z "$TAG_NAME" ]; then
               echo "this is not RC version"
             else
