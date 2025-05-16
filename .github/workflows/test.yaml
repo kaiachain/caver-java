@@ -238,7 +238,7 @@ jobs:
           if [[ $version == *"release/${TAG_NAME%-*}"* ]]; then
             echo "PR already exist"
           else
-            gh pr create --title "[Main] release/${TAG_NAME%-*} QA Sign-off" --base main --head release/${TAG_NAME%-*}
+            gh pr create --title "[Main] release/${TAG_NAME%-*} QA Sign-off" --body "release/${TAG_NAME%-*}" --base main --head release/${TAG_NAME%-*}
           fi
 
   # major_publish:
