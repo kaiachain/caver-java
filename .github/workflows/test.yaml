@@ -216,51 +216,51 @@ jobs:
   #         ./gradlew build --debug -x test
 
 
-  release_PR:
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    permissions:
-      contents: write
-      pull-requests: write
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Push release branch
-        run: |
-          TAG_NAME="${TAG#refs/tags/}"
-          echo "push to release branch: /release/${TAG_NAME%-*}"
-          git checkout -b release/${TAG_NAME%-*}
-          git push origin release/${TAG_NAME%-*}
-      - name: Create pull request
-        run: |
-          TAG_NAME="${TAG#refs/tags/}"
-          version=$(gh pr list --state open --limit 10 --json headRefName --jq '.[].headRefName')
-          echo $version
-          if [[ $version == *"release/${TAG_NAME%-*}"* ]]; then
-            echo "PR already exist"
-          else
-            gh pr create --title "[Main] release/${TAG_NAME%-*} QA Sign-off" --body "release/${TAG_NAME%-*}" --base main --head release/${TAG_NAME%-*}
-          fi
-
-  # major_publish:
+  # release_PR:
+  #   env:
+  #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #   permissions:
+  #     contents: write
+  #     pull-requests: write
   #   runs-on: ubuntu-latest
   #   steps:
   #     - uses: actions/checkout@v4
-  #     - name: check RC version
+  #     - name: Push release branch
   #       run: |
-  #           TAG_NAME="${TAG#refs/tags/}"
-  #           if [ -z "$TAG_NAME" ]; then
-  #             echo "this is not RC version"
-  #           else
-  #             sed -i "s/version '.*'/version '${TAG_NAME:1}'/" build.gradle
-  #             awk '/version '\''/' build.gradle
-  #           fi
-  #     - name: Publish major version
+  #         TAG_NAME="${TAG#refs/tags/}"
+  #         echo "push to release branch: /release/${TAG_NAME%-*}"
+  #         git checkout -b release/${TAG_NAME%-*}
+  #         git push origin release/${TAG_NAME%-*}
+  #     - name: Create pull request
   #       run: |
-  #             version=v$(.circleci/version.sh)
-  #             echo "Publishing a major release! version=$version"
-  #             ./gradlew clean publish --stacktrace --debug
-  #             ./gradlew closeAndReleaseRepository --stacktrace --debug
+  #         TAG_NAME="${TAG#refs/tags/}"
+  #         version=$(gh pr list --state open --limit 10 --json headRefName --jq '.[].headRefName')
+  #         echo $version
+  #         if [[ $version == *"release/${TAG_NAME%-*}"* ]]; then
+  #           echo "PR already exist"
+  #         else
+  #           gh pr create --title "[Main] release/${TAG_NAME%-*} QA Sign-off" --body "release/${TAG_NAME%-*}" --base main --head release/${TAG_NAME%-*}
+  #         fi
+
+  major_publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: check RC version
+        run: |
+            TAG_NAME="${TAG#refs/tags/}"
+            if [ -z "$TAG_NAME" ]; then
+              echo "this is not RC version"
+            else
+              sed -i "s/version '.*'/version '${TAG_NAME:1}'/" build.gradle
+              awk '/version '\''/' build.gradle
+            fi
+      - name: Publish major version
+        run: |
+              version=v$(.circleci/version.sh)
+              echo "Publishing a major release! version=$version"
+              ./gradlew clean publish --stacktrace --debug
+              ./gradlew closeAndReleaseRepository --stacktrace --debug
   
   # major_tagging:
   #   runs-on: ubuntu-latest
