@@ -260,6 +260,9 @@ jobs:
               awk '/version '\''/' build.gradle
             fi
       - name: Publish major version
+        env:
+          ORG_GRADLE_PROJECT_SIGNINGPASSWORD: ${{ secrets.ORG_GRADLE_PROJECT_SIGNINGPASSWORD }}
+          ORG_GRADLE_PROJECT_SIGNINGKEY: ${{ secrets.ORG_GRADLE_PROJECT_SIGNINGKEY }}
         run: |
               version=v$(.circleci/version.sh)
               echo "Publishing a major release! version=$version"
